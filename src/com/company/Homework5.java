@@ -5,7 +5,7 @@ import static java.lang.Math.abs;
 public class Homework5 {
 
     public enum ProbingType{
-        linear,quadratic,probing
+        linear,quadratic,doubleHash
     }
 
     public static void log(String x)
@@ -18,14 +18,14 @@ public class Homework5 {
         return abs((k +i)%m);
     }
 
-    public static int linearInsert(int[] a, int k)
+    public static int hashInsert(ProbingType p, int[] a, int k)
     {
         int i = 0;
         int j = 0;
         int probes = 1;
         while(i != a.length)
         {
-            j = linearProbing(k,i,a.length);
+            j = probe(p,k,i,a.length);
             if(a[j] == 0)
             {
                 a[j] = k;
@@ -41,14 +41,26 @@ public class Homework5 {
         throw new RuntimeException();
     }
 
-    public static int probe(ProbingType pType)
+    public static int probe(ProbingType pType, int k, int i, int m)
     {
-        int position;
+        int position = 0;
 
-        if(pType == ProbingType.linear)
+        switch(pType)
         {
-            position = linearProbing()
+            case linear:
+                position = linearProbing(k,i,m);
+                break;
+
+                case quadratic:
+                    position = quadraticProbing(k,i,m);
+                break;
+
+            case doubleHash:
+                position = doubleHashing(k,i,m);
+                break;
         }
+        return position;
+
     }
 
     public static  int quadraticProbing(int k, int i, int m)
@@ -89,14 +101,14 @@ public class Homework5 {
         {
             // insert 900 values using linear hashing
             int k = ninetyPercent[i];
-            linearInsert(a,k);
+            hashInsert(ProbingType.linear,a,k);
         }
 
         for (int i = 0; i < fifty.length; i++)
         {
             // insert 50 more values with linear search and count number of probes
             int k = fifty[i];
-            int numberOfProbes = linearInsert(a,k);
+            int numberOfProbes = hashInsert(ProbingType.linear,a,k);
             probeCount[i] = numberOfProbes;
         }
 
