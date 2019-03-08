@@ -2,7 +2,11 @@ package com.company;
 import java.util.Random;
 import static java.lang.Math.abs;
 
-public class Main {
+public class Homework5 {
+
+    public enum ProbingType{
+        linear,quadratic,probing
+    }
 
     public static void log(String x)
     {
@@ -35,6 +39,16 @@ public class Main {
 
         }
         throw new RuntimeException();
+    }
+
+    public static int probe(ProbingType pType)
+    {
+        int position;
+
+        if(pType == ProbingType.linear)
+        {
+            position = linearProbing()
+        }
     }
 
     public static  int quadraticProbing(int k, int i, int m)
