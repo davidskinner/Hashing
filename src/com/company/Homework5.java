@@ -1,9 +1,7 @@
 package com.company;
 
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.Random;
-import java.util.Spliterator;
+import java.lang.reflect.Array;
+import java.util.*;
 
 import static java.lang.Math.abs;
 
@@ -101,82 +99,134 @@ public class Homework5
 				break;
 		}
 		return position;
-
 	}
-
 
 	public static void main(String[] args)
 	{
 
 		Random rand = new Random();
-		LinkedHashSet<Integer> randomSet = new LinkedHashSet<>();
 
-		//get 950 unique numbers to put in the set
-		for (int i = 0; i < 950; i++)
+
+		int testingIterations = 100;
+
+		ArrayList<Integer> linearIterations = new ArrayList<>();
+		ArrayList<Integer> quadraticIterations = new ArrayList<>();
+		ArrayList<Integer> doubleHashingIterations = new ArrayList<>();
+
+
+		for (int k = 0; k < testingIterations; k++)
 		{
-			int temp = rand.nextInt();
-			while (randomSet.contains(temp))
+			LinkedHashSet<Integer> randomSet = new LinkedHashSet<>();
+
+			//get 950 unique numbers to put in the set
+			for (int i = 0; i < 950; i++)
 			{
-				temp = rand.nextInt(100000);
+				int temp = rand.nextInt();
+				while (randomSet.contains(temp))
+				{
+					temp = rand.nextInt(100000);
+				}
+				randomSet.add(temp);
 			}
-			randomSet.add(temp);
+
+			for (ProbingType probingType : ProbingType.values())
+			{
+				// clear out the arrays
+				int[] probeCount = new int[50];
+				int[] a = new int[1009];
+
+//				log("");
+//				log(probingType.toString());
+//				log("there are this many unique elements in the set: " + String.valueOf(randomSet.size()));
+
+				Iterator<Integer> d = randomSet.iterator();
+
+				for (int i = 0; i < 900; i++)
+				{
+					// insert 900 values using linear hashing
+					if (d.hasNext())
+					{
+						hashInsert(probingType, a, d.next());
+					} else
+					{
+						throw new RuntimeException("Ran out in 900");
+					}
+				}
+
+				for (int i = 0; i < 50; i++)
+				{
+					// insert 50 more values with linear search and count number of probes
+					if (d.hasNext())
+					{
+						int numberOfProbes = hashInsert(probingType, a, d.next());
+						probeCount[i] = numberOfProbes;
+					} else
+					{
+						throw new RuntimeException("Ran out of room in 950");
+					}
+				}
+
+				int total = 0;
+				// sum array
+				for (int i = 0; i < probeCount.length; i++)
+				{
+					total += probeCount[i];
+				}
+
+
+				int zeros = 0;
+
+				for (int l = 0; l < a.length; l++)
+				{
+					if (a[l] == 0)
+						zeros++;
+				}
+//				log("There are : " + zeros + " zeros at the end");
+//				log("Total probes for last 50 insertions is : " + String.valueOf(total));
+
+				if(probingType == ProbingType.linear)
+					linearIterations.add(total);
+				else if(probingType == ProbingType.quadratic)
+					quadraticIterations.add(total);
+				else
+					doubleHashingIterations.add(total);
+			}
 		}
 
-		for (ProbingType probingType : ProbingType.values())
+
+		int linearAverage = 0;
+		if(linearIterations.size() == testingIterations)
 		{
-			// clear out the arrays
-			int[] probeCount = new int[50];
-			int[] a = new int[1009];
-
-			log("");
-			log(probingType.toString());
-			log("there are this many unique elements in the set: " + String.valueOf(randomSet.size()));
-
-			Iterator<Integer> d = randomSet.iterator();
-
-			for (int i = 0; i < 900; i++)
+			for (int l : linearIterations)
 			{
-				// insert 900 values using linear hashing
-				if (d.hasNext())
-				{
-					hashInsert(probingType, a, d.next());
-				} else
-				{
-					throw new RuntimeException("Ran out in 900");
-				}
+				linearAverage += l;
 			}
-
-			for (int i = 0; i < 50; i++)
-			{
-				// insert 50 more values with linear search and count number of probes
-				if (d.hasNext())
-				{
-					int numberOfProbes = hashInsert(probingType, a, d.next());
-					probeCount[i] = numberOfProbes;
-				} else
-				{
-					throw new RuntimeException("Ran out of room in 950");
-				}
-			}
-
-			int total = 0;
-			// sum array
-			for (int i = 0; i < probeCount.length; i++)
-			{
-				total += probeCount[i];
-			}
-
-
-			int zeros = 0;
-
-			for (int l = 0; l < a.length; l++)
-			{
-				if(a[l] == 0)
-					zeros++;
-			}
-			log("There are : " + zeros + " zeros at the end");
-			log("Total probes for last 50 insertions is : " + String.valueOf(total));
-
+			linearAverage = linearAverage / testingIterations;
 		}
+
+		int quadraticAverage = 0;
+		if(quadraticIterations.size() == testingIterations)
+		{
+			for (int q : quadraticIterations)
+			{
+				quadraticAverage += q;
+			}
+			quadraticAverage = quadraticAverage/testingIterations;
+		}
+
+		int doubleHashingAverage = 0;
+		if(doubleHashingIterations.size() == testingIterations)
+		{
+			for (int dh: doubleHashingIterations)
+			{
+				doubleHashingAverage += dh;
+			}
+			doubleHashingAverage = doubleHashingAverage/testingIterations;
+		}
+
+		log(String.valueOf("After 100 test iterations: "));
+		log(String.valueOf("Average value for Linear Probing: " + linearAverage));
+		log(String.valueOf("Average value for Quadratic Probing: " + quadraticAverage));
+		log(String.valueOf("Average value for Double Hashing: " + doubleHashingAverage));
 	}
 }
