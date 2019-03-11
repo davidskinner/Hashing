@@ -1,6 +1,7 @@
 package com.company;
 import java.util.*;
 import static java.lang.Math.abs;
+import static java.lang.Math.random;
 
 public class Homework5
 {
@@ -13,6 +14,11 @@ public class Homework5
 	public static void log(String x)
 	{
 		System.out.println(x);
+	}
+
+	public static String randomSizeTest(LinkedHashSet<Integer> set)
+	{
+		return String.valueOf(set.size());
 	}
 
 	public static int linearProbing(int k, int i, int m)
@@ -106,10 +112,12 @@ public class Homework5
 		ArrayList<Integer> linearIterations = new ArrayList<>();
 		ArrayList<Integer> quadraticIterations = new ArrayList<>();
 		ArrayList<Integer> doubleHashingIterations = new ArrayList<>();
+		LinkedHashSet<Integer> randomSet = new LinkedHashSet<>();
+
 
 		for (int k = 0; k < testingIterations; k++)
 		{
-			LinkedHashSet<Integer> randomSet = new LinkedHashSet<>();
+			randomSet = new LinkedHashSet<>();
 
 			//get 950 unique numbers to put in the set
 			for (int i = 0; i < 950; i++)
@@ -212,5 +220,9 @@ public class Homework5
 		log(String.valueOf("Average value for Linear Probing: " + linearAverage));
 		log(String.valueOf("Average value for Quadratic Probing: " + quadraticAverage));
 		log(String.valueOf("Average value for Double Hashing: " + doubleHashingAverage));
+
+		log("Test Cases: ");
+		log("The random set should be 950. The randomSet used is: " + randomSizeTest(randomSet));
+
 	}
 }
