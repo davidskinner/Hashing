@@ -216,13 +216,16 @@ public class Homework5
 			doubleHashingAverage = doubleHashingAverage/testingIterations;
 		}
 
+		log("");
 		log(String.valueOf("After " + String.valueOf(testingIterations)+" test iterations: "));
 		log(String.valueOf("Average value for Linear Probing: " + linearAverage));
 		log(String.valueOf("Average value for Quadratic Probing: " + quadraticAverage));
 		log(String.valueOf("Average value for Double Hashing: " + doubleHashingAverage));
+		log("");
 
 		log("Test Cases: ");
 		log("The random set should be 950. The randomSet used is: " + randomSizeTest(randomSet));
+		log("");
 
 	}
 }
