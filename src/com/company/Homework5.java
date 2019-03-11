@@ -1,8 +1,5 @@
 package com.company;
-
-import java.lang.reflect.Array;
 import java.util.*;
-
 import static java.lang.Math.abs;
 
 public class Homework5
@@ -74,7 +71,6 @@ public class Homework5
 			}
 		}
 
-
 		log("there are : " + String.valueOf(zeros) + " zeros left");
 		log(String.valueOf(k));
 		throw new RuntimeException();
@@ -131,11 +127,6 @@ public class Homework5
 				// clear out the arrays
 				int[] probeCount = new int[50];
 				int[] a = new int[1009];
-
-//				log("");
-//				log(probingType.toString());
-//				log("there are this many unique elements in the set: " + String.valueOf(randomSet.size()));
-
 				Iterator<Integer> d = randomSet.iterator();
 
 				for (int i = 0; i < 900; i++)
@@ -170,7 +161,6 @@ public class Homework5
 					total += probeCount[i];
 				}
 
-
 				int zeros = 0;
 
 				for (int l = 0; l < a.length; l++)
@@ -178,8 +168,6 @@ public class Homework5
 					if (a[l] == 0)
 						zeros++;
 				}
-//				log("There are : " + zeros + " zeros at the end");
-//				log("Total probes for last 50 insertions is : " + String.valueOf(total));
 
 				if(probingType == ProbingType.linear)
 					linearIterations.add(total);
@@ -189,7 +177,6 @@ public class Homework5
 					doubleHashingIterations.add(total);
 			}
 		}
-
 
 		int linearAverage = 0;
 		if(linearIterations.size() == testingIterations)
