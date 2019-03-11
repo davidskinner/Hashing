@@ -25,7 +25,7 @@ public class Homework5
 
 	public static int quadraticProbing(int k, int i, int m)
 	{
-		return abs((k + i + (3) * (i ^ 2)) % m);
+		return abs((k + i + (3) * (i * i)) % m);
 	}
 
 	public static int doubleHashing(int k, int i, int m)
@@ -103,16 +103,13 @@ public class Homework5
 
 	public static void main(String[] args)
 	{
-
 		Random rand = new Random();
 
-
-		int testingIterations = 100;
+		int testingIterations = 1000;
 
 		ArrayList<Integer> linearIterations = new ArrayList<>();
 		ArrayList<Integer> quadraticIterations = new ArrayList<>();
 		ArrayList<Integer> doubleHashingIterations = new ArrayList<>();
-
 
 		for (int k = 0; k < testingIterations; k++)
 		{
@@ -224,7 +221,7 @@ public class Homework5
 			doubleHashingAverage = doubleHashingAverage/testingIterations;
 		}
 
-		log(String.valueOf("After 100 test iterations: "));
+		log(String.valueOf("After " + String.valueOf(testingIterations)+" test iterations: "));
 		log(String.valueOf("Average value for Linear Probing: " + linearAverage));
 		log(String.valueOf("Average value for Quadratic Probing: " + quadraticAverage));
 		log(String.valueOf("Average value for Double Hashing: " + doubleHashingAverage));
